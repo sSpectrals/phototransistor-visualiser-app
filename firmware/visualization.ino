@@ -6,12 +6,16 @@ const int8_t analogPins[32] = {A0,  A1,  A2,  A3,  A4,  A5,  A6,  A7,
                                A16, A17, A18, A19, A20, A21, A22, A23,
                                A24, A25, A26, A27, A28, A29, A30, A31};
 // Variables
-int thresholdLineSens[32]; // Loaded from EEPROM
-int sensors[32];           // Raw sensor values
+int thresholdLineSens[32];
+int sensors[32]; // Raw sensor values
 
 void setup() {
   Serial.begin(115200);
-  EEPROM.get(200, thresholdLineSens); // Load thresholds from EEPROM address 200
+  EEPROM.get(200, thresholdLineSens);
+
+  threholdLineSens = {
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; // Initialize thresholds
 }
 
 void loop() {
