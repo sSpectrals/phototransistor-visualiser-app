@@ -1,0 +1,4 @@
+pyserial==3.5
+matplotlib==3.5.2
+numpy>=1.21.0 # required for matplotlib
+tkinter>=0 # comes with Python, no need to install separately
