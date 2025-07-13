@@ -1,9 +1,15 @@
-
+import json
+import serial
+import serial.tools.list_ports
+import tkinter as tk
+from tkinter import ttk, messagebox
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
 
 def load_coordinates_from_file():
     coordinates = []
     try:
-        with open('sensor_coordinates.json', 'r') as file:
+        with open('src/coordinates.json', 'r') as file:
             data = json.load(file)
             for item in data:
                 sensor_id = item["sensor_id"]
