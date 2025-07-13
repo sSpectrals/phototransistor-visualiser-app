@@ -1,4 +1,4 @@
-#include <EEPROM.h>
+// #include <EEPROM.h>
 
 // Sensor wiring (adjust pins if needed)
 const int8_t analogPins[32] = {A0,  A1,  A2,  A3,  A4,  A5,  A6,  A7,
@@ -11,7 +11,7 @@ int sensors[32]; // Raw sensor values
 
 void setup() {
   Serial.begin(115200);
-  EEPROM.get(200, thresholdLineSens);
+  // EEPROM.get(EEPROM ADDRESS, thresholdLineSens);
 
   threholdLineSens = {
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
