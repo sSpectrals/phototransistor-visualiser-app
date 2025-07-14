@@ -11,6 +11,7 @@ _A real-time sensor monitoring tool for phototransistors_
 
 - [Abstract](#Abstract)
 - [Features](#Features)
+- [Open-Source](#open-source)
 - [How to Use](#How-to-use)
 - [Customization](#Customization)
 - [Installation](#installation)
@@ -21,6 +22,12 @@ _A real-time sensor monitoring tool for phototransistors_
 For my robotics team Roboticus, we needed a better way to monitor **32 phototransistor sensors** while detecting a white line. Simply reading raw serial values was inefficient so we built this real-time visualizer to:  
 ✔ Clearly display which sensors are triggered  
 ✔ Optimize debugging with instant visual feedback
+
+## Open-Source
+
+The original project was designed specifically for the sensors and components used in the football robot for Roboticus. The goal now is to make the application universally usable for a wider audience and allowing wider customization.
+
+Would you like to help with this project? Feel free to make a pull request!
 
 ## Features
 
