@@ -38,6 +38,9 @@ def start_graph():
         [coord[1] for _, coord in coordinates],
     s=100
 )
+    
+    for label, (x, y) in coordinates:
+        ax.text(x, y + 0.3, str(label), ha='center', fontsize=8)
 
     ax.set_title("Sensor Visualisation\nRed = Active | Blue = Inactive | Yellow = Disabled")
     ax.grid(True)
