@@ -2,8 +2,10 @@
 
 _A real-time sensor monitoring tool for phototransistors_
 
-![Demo GIF](https://via.placeholder.com/600x400?text=Demo+GIF+Here) <!-- Replace with actual gif -->
-![alt text](image.png)
+<div style="display: flex; gap: 10px;">
+  <img src="images/app_screenshot.jpg" alt="App Screenshot" width="300" style="height: auto;">
+  <img src="images/robot_on_line.jpg" alt="Robot on Line"  width="300" style="height: 300px; object-fit: cover; transform: rotate(-90deg);">
+</div>
 
 ---
 
@@ -54,10 +56,13 @@ Useful if you need to detect only the right side gets activated or only the left
 ## Installation
 
 1. **Clone the repository**:
+
    ```bash
    git clone https://github.com/sSpectrals/phototransistor-visualizer.git
    ```
+
 2. **Install dependencies:**:
+
    ```bash
    pip install -r docs/requirements.txt
    ```
