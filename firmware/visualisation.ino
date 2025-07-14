@@ -90,7 +90,7 @@ void sendSensorData() {
 
   for (int i = 0; i < SENSOR_BUFFER_SIZE; i++) {
     Serial.print(sensorThreshold[i]);
-    if (i < pinCount - 1)
+    if (i < SENSOR_BUFFER_SIZE - 1)
       Serial.print(",");
   }
   Serial.println(); // End transmission
