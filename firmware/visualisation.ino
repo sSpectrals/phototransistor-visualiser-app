@@ -2,12 +2,21 @@
 
 // CONFIGURABLE SETTINGS
 
+/**
+ * @brief Define the amount of sensors / the amount you're expecting to read
+ * @note if you use a multiplexer, the amount of sensors can be more than the
+ * amount of analog pins.
+ * @note default assumes that the amount of sensors is twice the amount of
+ * analog pins
+ */
+const int SENSOR_BUFFER_SIZE = 16;
+
 // ! set threshold values manually if EEPROM is not used
-bool useEEPROM = false;
+const bool useEEPROM = false;
 int eepromAddress = -1;
 
 // turn on and define pin for multiplexer
-bool useMultiplexer = false;
+const bool useMultiplexer = false;
 int multiplexerPin = -1;
 
 // Define analog pins used for sensors, customize these manually
@@ -16,15 +25,6 @@ const int analogPins[] = {A0, A1, A2,  A3,  A4,  A5,  A6,  A7,
 
 // pinCount != sensor buffer size if multiplexer is used
 const int pinCount = sizeof(analogPins) / sizeof(analogPins[0]);
-
-/**
- * @brief Define the amount of sensors / the amount you're expecting to read
- * @note if you use a multiplexer, the amount of sensors can be more than the
- * amount of analog pins.
- * @note default assumes that the amount of sensors is twice the amount of
- * analog pins
- */
-const int SENSOR_BUFFER_SIZE = useMultiplexer ? 2 * pinCount : pinCount;
 
 // total expected values to be read
 int sensorsInput[SENSOR_BUFFER_SIZE];
