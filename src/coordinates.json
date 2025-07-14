@@ -1,130 +1,34 @@
 [
-    {
-        "sensor_id": 1,
-        "coordinates": [0, -7]
-    },
-    {
-        "sensor_id": 3,
-        "coordinates": [-2, -6]
-    },
-    {
-        "sensor_id": 6,
-        "coordinates": [-5, -3]
-    },
-    {
-        "sensor_id": 8,
-        "coordinates": [-7, -1]
-    },
-    {
-        "sensor_id": 9,
-        "coordinates": [-7.5, 0]
-    },
-    {
-        "sensor_id": 11,
-        "coordinates": [-6, 2]
-    },
-    {
-        "sensor_id": 14,
-        "coordinates": [-3, 4.5]
-    },
-    {
-        "sensor_id": 31,
-        "coordinates": [-1, 5]
-    },
-    {
-        "sensor_id": 16,
-        "coordinates": [0, 5]
-    },
-    {
-        "sensor_id": 17,
-        "coordinates": [2, 5]
-    },
-    {
-        "sensor_id": 20,
-        "coordinates": [5, 3]
-    },
-    {
-        "sensor_id": 22,
-        "coordinates": [7, 1]
-    },
-    {
-        "sensor_id": 23,
-        "coordinates": [7.5, 0]
-    },
-    {
-        "sensor_id": 25,
-        "coordinates": [6, -2]
-    },
-    {
-        "sensor_id": 28,
-        "coordinates": [3, -5]
-    },
-    {
-        "sensor_id": 30,
-        "coordinates": [1, -7]
-    },
-    {
-        "sensor_id": 2,
-        "coordinates": [-1, -7]
-    },
-    {
-        "sensor_id": 4,
-        "coordinates": [-3, -5]
-    },
-    {
-        "sensor_id": 5,
-        "coordinates": [-4, -4]
-    },
-    {
-        "sensor_id": 7,
-        "coordinates": [-6, -2]
-    },
-    {
-        "sensor_id": 10,
-        "coordinates": [-7, 1]
-    },
-    {
-        "sensor_id": 12,
-        "coordinates": [-5, 3]
-    },
-    {
-        "sensor_id": 13,
-        "coordinates": [-4, 4]
-    },
-    {
-        "sensor_id": 15,
-        "coordinates": [-2, 5]
-    },
-    {
-        "sensor_id": 32,
-        "coordinates": [1, 5]
-    },
-    {
-        "sensor_id": 18,
-        "coordinates": [3, 4.5]
-    },
-    {
-        "sensor_id": 19,
-        "coordinates": [4, 4]
-    },
-    {
-        "sensor_id": 21,
-        "coordinates": [6, 2]
-    },
-    {
-        "sensor_id": 24,
-        "coordinates": [7, -1]
-    },
-    {
-        "sensor_id": 26,
-        "coordinates": [5, -3]
-    },
-    {
-        "sensor_id": 27,
-        "coordinates": [4, -4]
-    },
-    {
-        "sensor_id": 29,
-        "coordinates": [2, -6]
-    }
+  {"sensor_id": 0, "coordinates": [0.0, -7.0]},
+  {"sensor_id": 1, "coordinates": [1.37, -6.87]},
+  {"sensor_id": 2, "coordinates": [2.67, -6.5]},
+  {"sensor_id": 3, "coordinates": [3.83, -5.9]},
+  {"sensor_id": 4, "coordinates": [4.83, -5.09]},
+  {"sensor_id": 5, "coordinates": [5.63, -4.1]},
+  {"sensor_id": 6, "coordinates": [6.18, -2.95]},
+  {"sensor_id": 7, "coordinates": [6.56, -1.65]},
+  {"sensor_id": 8, "coordinates": [6.73, 0.0]},
+  {"sensor_id": 9, "coordinates": [6.56, 1.65]},
+  {"sensor_id": 10, "coordinates": [6.18, 2.95]},
+  {"sensor_id": 11, "coordinates": [5.63, 4.1]},
+  {"sensor_id": 12, "coordinates": [4.83, 5.09]},
+  {"sensor_id": 13, "coordinates": [3.83, 5.9]},
+  {"sensor_id": 14, "coordinates": [2.67, 6.5]},
+  {"sensor_id": 15, "coordinates": [1.37, 6.87]},
+  {"sensor_id": 16, "coordinates": [0.0, 7.0]},
+  {"sensor_id": 17, "coordinates": [-1.37, 6.87]},
+  {"sensor_id": 18, "coordinates": [-2.67, 6.5]},
+  {"sensor_id": 19, "coordinates": [-3.83, 5.9]},
+  {"sensor_id": 20, "coordinates": [-4.83, 5.09]},
+  {"sensor_id": 21, "coordinates": [-5.63, 4.1]},
+  {"sensor_id": 22, "coordinates": [-6.18, 2.95]},
+  {"sensor_id": 23, "coordinates": [-6.56, 1.65]},
+  {"sensor_id": 24, "coordinates": [-6.73, 0.0]},
+  {"sensor_id": 25, "coordinates": [-6.56, -1.65]},
+  {"sensor_id": 26, "coordinates": [-6.18, -2.95]},
+  {"sensor_id": 27, "coordinates": [-5.63, -4.1]},
+  {"sensor_id": 28, "coordinates": [-4.83, -5.09]},
+  {"sensor_id": 29, "coordinates": [-3.83, -5.9]},
+  {"sensor_id": 30, "coordinates": [-2.67, -6.5]},
+  {"sensor_id": 31, "coordinates": [-1.37, -6.87]}
 ]
