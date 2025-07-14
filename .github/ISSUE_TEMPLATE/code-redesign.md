@@ -1,33 +1,39 @@
 ---
 name: Code redesign
 about: Redesigning the old code in a smarter more dynamic way
-title: ''
+title: ""
 labels: enhancement
-assignees: ''
-
+assignees: ""
 ---
 
 ## Problem Statement
 
-
 # Proposed Changes
 
 ## main.py
+
 ### Before (hardcoded)
+
 ```
 
 ```
+
 ### After (dynamic)
-```
 
 ```
 
-## visualization.ino
+```
+
+## visualisation.ino
+
 ### Before (hardcoded)
+
 ```
 
 ```
+
 ### After (dynamic)
+
 ```
 
 ```
