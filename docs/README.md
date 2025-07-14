@@ -3,6 +3,7 @@
 _A real-time sensor monitoring tool for phototransistors_
 
 ![Demo GIF](https://via.placeholder.com/600x400?text=Demo+GIF+Here) <!-- Replace with actual gif -->
+![alt text](image.png)
 
 ---
 
@@ -58,7 +59,7 @@ Useful if you need to detect only the right side gets activated or only the left
    ```
 2. **Install dependencies:**:
    ```bash
-   pip install -r requirements.txt
+   pip install -r docs/requirements.txt
    ```
 
 ---

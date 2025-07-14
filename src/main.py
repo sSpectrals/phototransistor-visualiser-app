@@ -49,12 +49,19 @@ def start_graph():
             data = ser.readline().decode('utf-8').strip()
             if data:
                 values = list(map(int, data.split(',')))
+
+
+                if len(values) != NUM_SENSORS * 2:
+                    print("Invalid data length, amount of values read over serial: ", values)
+                    print("Expected length from coordinates.json + thresholds: ", NUM_SENSORS * 2)
+                    return scatter,
+            
                 sensors = values[:NUM_SENSORS]
                 thresholds = values[NUM_SENSORS:NUM_SENSORS*2]
 
                 colors = []
                 for i in range(NUM_SENSORS):
-                    if thresholds[i] == 0:
+                    if thresholds[i] == -1:
                         colors.append('yellow')
                     elif sensors[i] > thresholds[i]:
                         colors.append('red')
