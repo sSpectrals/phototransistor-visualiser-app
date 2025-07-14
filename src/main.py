@@ -39,7 +39,7 @@ def start_graph():
     s=100
 )
 
-    ax.set_title("Sensor Visualization\nRed = Active | Blue = Inactive | Yellow = Disabled")
+    ax.set_title("Sensor Visualisation\nRed = Active | Blue = Inactive | Yellow = Disabled")
     ax.grid(True)
     ax.set_aspect('equal')
 
