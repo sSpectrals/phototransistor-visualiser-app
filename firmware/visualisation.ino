@@ -1,103 +1,98 @@
 #include <EEPROM.h>
 
-int pinCount = 16; // Total number of analog pins to initialize arrays
+// CONFIGURABLE SETTINGS
 
-const int8_t analogPins[pinCount] = {A0, A1, A2,  A3,  A4,  A5,  A6,  A7,
-                                     A8, A9, A10, A11, A12, A13, A14, A15};
+// ! set threshold values manually if EEPROM is not used
+bool useEEPROM = false;
+int eepromAddress = -1;
 
-int sensorsInput[pinCount];
+// turn on and define pin for multiplexer
+bool useMultiplexer = false;
+int multiplexerPin = -1;
 
-//
-/**
- * @brief // Put in your values, or use EEPROM to load them
- * Use -1 to disable thresholds for certain sensors.
- */
-int sensorThreshold[pinCount] = {-1};
+// Define analog pins used for sensors, customize these manually
+const int analogPins[] = {A0, A1, A2,  A3,  A4,  A5,  A6,  A7,
+                          A8, A9, A10, A11, A12, A13, A14, A15};
 
-/**
- * @note EEPROM is not used by default, set the address
- * if you want to use it.
- * ! make sure EEPROM actually has the data you want to read.
- */
-const int eepromAddress = -1;
+// pinCount != sensor buffer size if multiplexer is used
+const int pinCount = sizeof(analogPins) / sizeof(analogPins[0]);
 
 /**
- * @brief Multiplexer is not used by default, but can be enabled if needed.
- * ! make sure to set the useMultiplexer boolean to true.
- * ! make sure to set the multiplexer pin correctly.
+ * @brief Define the amount of sensors / the amount you're expecting to read
+ * @note if you use a multiplexer, the amount of sensors can be more than the
+ * amount of analog pins.
+ * @note default assumes that the amount of sensors is twice the amount of
+ * analog pins
  */
-const int multiplexerPin = -1; // Multiplexer pin not used in this version
-bool useMultiplexer = false;   // Set to true if using a multiplexer
+const int SENSOR_BUFFER_SIZE = useMultiplexer ? 2 * pinCount : pinCount;
 
-const int8_t analogPinsLOW[pinCount] = {A0, A1, A2,  A3,  A4,  A5,  A6,  A7,
-                                        A8, A9, A10, A11, A12, A13, A14, A15};
-const int8_t analogPinsHIGH[pinCount] = {A0, A1, A2,  A3,  A4,  A5,  A6,  A7,
-                                         A8, A9, A10, A11, A12, A13, A14, A15};
+// total expected values to be read
+int sensorsInput[SENSOR_BUFFER_SIZE];
+int sensorThreshold[SENSOR_BUFFER_SIZE] = {
+    -1, -1, -1, -1, /* ... up to SENSOR_BUFFER_SIZE values ... */};
 
 void setup() {
   Serial.begin(115200);
+
+  while (pinCount > SENSOR_BUFFER_SIZE) {
+    Serial.println("Error: Amount of analog pins exceeds sensor buffer size.");
+    delay(1000);
+  }
+
   if (useMultiplexer && multiplexerPin >= 0) {
     pinMode(multiplexerPin, OUTPUT);
   }
 
-  // ! make sure to set the EEPROM address if used
-  if (eepromAddress >= 0) {
-    // EEPROM.get(eepromAddress, sensorThreshold);
+  // make sure to set the EEPROM address if used
+  // Make sure the size is within sensorThreshold array bounds
+  if (useEEPROM && eepromAddress >= 0) {
+    EEPROM.get(eepromAddress, sensorThreshold);
   }
 }
 
 void loop() {
+
   if (Serial.available() && Serial.read() == 'R') {
-
-    if (useMultiplexer)
-      readSensorsWithMultiplexer();
-    else
-      readSensors();
-
-    sendSensorData(); // Send both sensors and thresholds
+    readSensors();
+    sendSensorData();
   }
+
   delay(10);
 }
 
 void readSensors() {
-  // Read first 16 sensors (LOW)
-  int numPins = sizeof(analogPins) / sizeof(analogPins[0]);
-  for (int i = 0; i < numPins; i++) {
-    sensorsInput[i] = analogRead(analogPins[i]);
+
+  if (useMultiplexer && multiplexerPin >= 0) {
+
+    // ! assuming the total amount of sensors is twice the amount of analog pins
+    // (pinCount)
+    //  adjust as needed for your specific multiplexer setup
+    digitalWrite(multiplexerPin, LOW);
+    for (int i = 0; i < pinCount; i++) {
+      sensorsInput[i] = analogRead(analogPins[i]);
+    }
+
+    digitalWrite(multiplexerPin, HIGH);
+    for (int i = 0; i < pinCount; i++) {
+      sensorsInput[pinCount + i] = analogRead(analogPins[i]);
+    }
+  } else {
+    for (int i = 0; i < pinCount; i++) {
+      sensorsInput[i] = analogRead(analogPins[i]);
+    }
   }
-}
-
-void readSensorsWithMultiplexer() {
-
-  int numAnalogPinsLow = sizeof(analogPinsLOW) / sizeof(analogPinsLOW[0]);
-  int numAnalogPinsHigh = sizeof(analogPinsHIGH) / sizeof(analogPinsHIGH[0]);
-
-  // Read first 16 sensors (LOW)
-  digitalWrite(multiplexerPin, LOW);
-  for (int i = 0; i < numAnalogPinsLow; i++)
-    sensorsInput[i] = analogRead(analogPinsLOW[i]);
-
-  // Read next 16 sensors (HIGH)
-  digitalWrite(multiplexerPin, HIGH);
-  for (int i = 0; i < numAnalogPinsHigh; i++)
-    sensorsInput[numAnalogPinsLow + i] = analogRead(analogPinsHIGH[i]);
 }
 
 void sendSensorData() {
 
-  int numSensors = sizeof(sensorsInput) / sizeof(sensorsInput[0]);
-  int numThresholds = sizeof(sensorThreshold) / sizeof(sensorThreshold[0]);
-
-  // Send sensor values (0-31)
-  for (int i = 0; i < numSensors; i++) {
+  for (int i = 0; i < SENSOR_BUFFER_SIZE; i++) {
     Serial.print(sensorsInput[i]);
     Serial.print(",");
   }
 
-  // Send thresholds (0-31)
-  for (int i = 0; i < numThresholds; i++) {
+  for (int i = 0; i < SENSOR_BUFFER_SIZE; i++) {
     Serial.print(sensorThreshold[i]);
-    if (i < numThresholds - 1)
+    if (i < pinCount - 1)
       Serial.print(",");
   }
   Serial.println(); // End transmission
