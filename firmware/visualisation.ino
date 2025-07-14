@@ -6,8 +6,6 @@
  * @brief Define the amount of sensors / the amount you're expecting to read
  * @note if you use a multiplexer, the amount of sensors can be more than the
  * amount of analog pins.
- * @note default assumes that the amount of sensors is twice the amount of
- * analog pins
  */
 const int SENSOR_BUFFER_SIZE = 16;
 
