@@ -53,7 +53,6 @@ Would you like to help with this project? Feel free to make a pull request!
   - Give coordinates for each sensor to match a specific shape if necessary (i.e. of a PCB)
   - Give each sensor a label on the graph (i.e an ID to do something very specific).
 - visualisation.ino
-  - Allow use of a multiplexer if required
   - Allow use of EEPROM to receive values if required
 
 ## Installation
