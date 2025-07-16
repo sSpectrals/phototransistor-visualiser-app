@@ -16,14 +16,12 @@ const int pinCount = sizeof(analogPinsHIGH) / sizeof(analogPinsHIGH[0]);
 
 // total expected values to be read
 int sensorsInput[pinCount * 2];
-int sensorThreshold[pinCount * 2];
+int sensorThreshold[pinCount * 2] = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+                                     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+                                     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
 
 void setup() {
   Serial.begin(115200);
-
-  sensorThreshold[pinCount * 2] = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-                                   -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-                                   -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
 
   // make sure to set the EEPROM address if used
   // Make sure the size is within sensorThreshold array bounds
