@@ -19,8 +19,8 @@ int sensorThreshold[pinCount];
 void setup() {
   Serial.begin(115200);
 
-  int sensorThreshold[pinCount] = {-1, -1, -1, -1, -1, -1, -1, -1,
-                                   -1, -1, -1, -1, -1, -1, -1, -1};
+  sensorThreshold[pinCount] = {-1, -1, -1, -1, -1, -1, -1, -1,
+                               -1, -1, -1, -1, -1, -1, -1, -1};
 
   // make sure to set the EEPROM address if used
   // Make sure the size is within sensorThreshold array bounds
