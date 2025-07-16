@@ -3,24 +3,27 @@
 // CONFIGURABLE SETTINGS
 
 // ! set threshold values manually if EEPROM is not used
-const bool useEEPROM = false;
-int eepromAddress = -1;
+const bool useEEPROM = true;
+int eepromAddress = 200;
 
 // Define analog pins used for sensors, customize these manually
-const int analogPins[] = {A0, A1, A2,  A3,  A4,  A5,  A6,  A7,
-                          A8, A9, A10, A11, A12, A13, A14, A15};
+const int8_t analogPinsHIGH[16] = {A0,  A1,  A2,  A3,  A7,  A6,  A8,  A9,
+                                   A17, A10, A11, A12, A13, A14, A16, A15};
+const int8_t analogPinsLOW[16] = {A0, A1,  A2,  A3,  A7,  A6,  A8,  A17,
+                                  A9, A10, A11, A12, A13, A14, A16, A15};
 
-const int pinCount = sizeof(analogPins) / sizeof(analogPins[0]);
+const int pinCount = sizeof(analogPinsHIGH) / sizeof(analogPinsHIGH[0]);
 
 // total expected values to be read
-int sensorsInput[pinCount];
-int sensorThreshold[pinCount];
+int sensorsInput[pinCount * 2];
+int sensorThreshold[pinCount * 2];
 
 void setup() {
   Serial.begin(115200);
 
-  int sensorThreshold[pinCount] = {-1, -1, -1, -1, -1, -1, -1, -1,
-                                   -1, -1, -1, -1, -1, -1, -1, -1};
+  sensorThreshold[pinCount * 2] = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+                                   -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+                                   -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
 
   // make sure to set the EEPROM address if used
   // Make sure the size is within sensorThreshold array bounds
@@ -47,8 +50,14 @@ void loop() {
  */
 void readSensors() {
 
+  digitalWriteFast(37, LOW);
   for (int i = 0; i < pinCount; i++) {
-    sensorsInput[i] = analogRead(analogPins[i]);
+    sensorsInput[i] = analogRead(analogPinsLOW[i]);
+  }
+
+  digitalWriteFast(37, HIGH);
+  for (int i = 0; i < pinCount; i++) {
+    sensorsInput[pinCount + i] = analogRead(analogPinsHIGH[i]);
   }
 }
 
@@ -59,14 +68,14 @@ void readSensors() {
  */
 void sendSensorData() {
 
-  for (int i = 0; i < pinCount; i++) {
+  for (int i = 0; i < pinCount * 2; i++) {
     Serial.print(sensorsInput[i]);
     Serial.print(",");
   }
 
-  for (int i = 0; i < pinCount; i++) {
+  for (int i = 0; i < pinCount * 2; i++) {
     Serial.print(sensorThreshold[i]);
-    if (i < pinCount - 1)
+    if (i < pinCount * 2 - 1)
       Serial.print(",");
   }
   Serial.println(); // End transmission

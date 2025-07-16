@@ -106,7 +106,7 @@ def start_graph():
                     threshold = thresholds[i]
                     label = coordinates[i][0]
 
-                    if threshold == -1:
+                    if threshold == 0:
                         status = "Disabled"
                         color = disabledColor
                     elif sensor > threshold:
