@@ -15,9 +15,9 @@ disabledColor = 'yellow'
 com_port = 'COM1'
 
            # first #num-sensors = sensor values, next #num-sensors = thresholds
-           #  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32,
-test_data = [100, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 100, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-             50, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 50, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+           #  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40
+test_data = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+             -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
 
 # Load sensor coordinates and labels from a JSON file
 def load_coordinates_from_file():
@@ -49,19 +49,12 @@ def start_graph(selected_port):
         print("Using test data mode.")
         test_mode = True
 
-    # Create figure with two axes: plot + table
-    # You can adjust the size etc
-    fig = plt.figure(figsize=(8, 8)) 
-    gs = fig.add_gridspec(1, 2, width_ratios=[1, 2])
-    
-    # Table axis (left)
-    ax_table = fig.add_subplot(gs[0])
-
-    # Graph axis (right)
-    ax = fig.add_subplot(gs[1])
+    # Create separate figures for graph and table
+    fig_graph, ax_graph = plt.subplots(figsize=(8, 8))
+    fig_table, ax_table = plt.subplots(figsize=(7, 8))
 
     # Scatter plot for sensors
-    scatter = ax.scatter(
+    scatter = ax_graph.scatter(
         [coord[0] for _, coord in coordinates],
         [coord[1] for _, coord in coordinates],
         s=100
@@ -70,16 +63,16 @@ def start_graph(selected_port):
     # Create a label for each sensor based on the coordinates
     # You can customize the label position and other elements as needed
     for label, (x, y) in coordinates:
-        ax.text(x, y + 0.3, str(label), ha='center', fontsize=8)
+        ax_graph.text(x, y + 0.3, str(label), ha='center', fontsize=8)
 
-    ax.set_title(
+    ax_graph.set_title(
         f"Sensor Visualisation\n"
         f"activeColor = {activeColor} | "
         f"inactiveColor = {inactiveColor} | "
         f"disabledColor = {disabledColor}"
     )
-    ax.grid(True)
-    ax.set_aspect('equal')
+    ax_graph.grid(True)
+    ax_graph.set_aspect('equal')
 
     # Table setup
     column_labels = ["Sensor", "Value", "Threshold", "Status"]
@@ -95,8 +88,8 @@ def start_graph(selected_port):
     def update(frame):
         try:
             if test_mode:
-                # first #num-sensors = sensor values, next #num-sensors = thresholds
-                    values = test_data
+
+                values = test_data
             else:
                 ser.write(b'R')
                 data = ser.readline().decode('utf-8').strip()
@@ -146,7 +139,7 @@ def start_graph(selected_port):
             print(f"Error: {e}")
         return scatter,
 
-    ani = FuncAnimation(fig, update, interval=200, blit=False, cache_frame_data=False)
+    ani_graph = FuncAnimation(fig_graph, update, interval=200, blit=False, cache_frame_data=False)
     plt.tight_layout()
     plt.show()
     if ser:
