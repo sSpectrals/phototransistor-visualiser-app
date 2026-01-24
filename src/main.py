@@ -15,9 +15,22 @@ disabledColor = 'yellow'
 com_port = 'COM1'
 
            # first #num-sensors = sensor values, next #num-sensors = thresholds
-           #  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40
-test_data = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1
-             -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+           #  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32,
+test_data = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+             -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+
+# Validate test_data length
+def validate_array_length(test_data, num_sensors):
+    expected_length = num_sensors * 2
+    if len(test_data) != expected_length:
+        error_msg = (
+            f"Error: test_data length is {len(test_data)}, but expected {expected_length} "
+            f"(NUM_SENSORS/number of objects in json * 2). Please check your test_data definition.\n"
+            f"- First NUM_SENSORS values are sensor readings.\n"
+            f"- Next NUM_SENSORS values are thresholds."
+        )
+        print(error_msg)
+        raise ValueError(error_msg)
 
 # Load sensor coordinates and labels from a JSON file
 def load_coordinates_from_file():
@@ -34,8 +47,10 @@ def load_coordinates_from_file():
         print(f"Error loading coordinates: {e}")
         return []
 
+
 coordinates = load_coordinates_from_file()
 NUM_SENSORS = len(coordinates)
+validate_array_length(test_data, NUM_SENSORS)
 
 
 def start_graph(selected_port):
@@ -98,9 +113,10 @@ def start_graph(selected_port):
                 else:
                     # If no data, disable values
                     values = [-1] * NUM_SENSORS * 2
-            if len(values) != NUM_SENSORS * 2:
-                print("Invalid data length, amount of values read over serial: ", values)
-                print("Expected length from coordinates.json + thresholds: ", NUM_SENSORS * 2)
+            try:
+                validate_array_length(values, NUM_SENSORS)
+            except ValueError as ve:
+                print(ve)
                 return scatter,
 
             sensors = values[:NUM_SENSORS]
@@ -146,6 +162,5 @@ def start_graph(selected_port):
         ser.close()
 
 if __name__ == "__main__":
-    # Start immediately at COM2
     start_graph(com_port)
 
