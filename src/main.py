@@ -5,19 +5,26 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
+from direction import get_arrow_direction_defender, get_arrow_direction_attacker
+
+# for defender arrow direction calculation
+# Keep within -15 to 15 range
+xBall = 2
+yBall = 5
 
 # Custom colors for categories
-activeColor = 'red'
-inactiveColor = 'blue'
-disabledColor = 'yellow'
+activeColor_attacker = 'red'
+activeColor_defender = 'blue'
+inactiveColor = 'yellow'
+disabledColor = 'grey'
 
 # COM 1-N or NONE for custom input test data
 com_port = 'COM1'
 
            # first #num-sensors = sensor values, next #num-sensors = thresholds
-           #  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40
-test_data = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-             -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+           #  0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39
+test_data = [10, -1, -1, -1, -1, -1,  1, -1, -1, -1, -1, -1, 10, 10, 10, -1, -1, -1, -1, -1, -1, -1, 10, 10, 101, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 100, -1, -1, -1, -1,
+              1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  1,  1, 1, -1, -1, -1, -1, -1, -1, -1, 1,  1,   1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,   1, -1, -1, -1, -1]
 
 # Validate test_data length
 def validate_array_length(test_data, num_sensors):
@@ -74,10 +81,13 @@ def start_graph(selected_port):
         [coord[1] for _, coord in coordinates],
         s=100
     )
+    # Add orange point for ball location
+    ball_point = ax_graph.scatter([xBall], [yBall], s=150, c='orange', marker='o', label='Ball')
     
     
-    ax_graph.arrow(-2, -2, 4, 4, head_width=1, head_length=1, fc='red', ec='red', length_includes_head=False)
-    ax_graph.arrow(-2,-2, 0, -4, head_width=1, head_length=1, fc='blue', ec='blue', length_includes_head=False)
+    
+    red_arrow = None
+    blue_arrow = None
 
     # Create a label for each sensor based on the coordinates
     # You can customize the label position and other elements as needed
@@ -86,9 +96,11 @@ def start_graph(selected_port):
 
     ax_graph.set_title(
         f"Sensor Visualisation\n"
-        f"activeColor = {activeColor} | "
-        f"inactiveColor = {inactiveColor} | "
-        f"disabledColor = {disabledColor}"
+        f"| activeColor_attacker = {activeColor_attacker} | "
+        f"activeColor_defender = {activeColor_defender} | \n"
+        f"| inactiveColor = {inactiveColor} | "
+        f"disabledColor = {disabledColor} | "
+        f"\nBall location: ({xBall}, {yBall}) (orange)"
     )
     ax_graph.grid(True)
     ax_graph.set_aspect('equal')
@@ -138,7 +150,7 @@ def start_graph(selected_port):
                     color = disabledColor
                 elif sensor > threshold:
                     status = "Active"
-                    color = activeColor
+                    color = activeColor_attacker if i >= 24 else activeColor_defender
                 else:
                     status = "Inactive"
                     color = inactiveColor
@@ -146,7 +158,28 @@ def start_graph(selected_port):
                 colors.append(color)
                 table_vals.append([label, sensor, threshold, status])
 
+
             scatter.set_color(colors)
+
+            # Remove previous red arrow if it exists
+            nonlocal red_arrow
+            if red_arrow is not None:
+                red_arrow.remove()
+                red_arrow = None
+            
+            nonlocal blue_arrow
+            if blue_arrow is not None:
+                blue_arrow.remove()
+                blue_arrow = None
+
+            # Get arrow direction from helper function
+            arrow_direction_red = get_arrow_direction_attacker(colors, activeColor_attacker=activeColor_attacker)
+            if arrow_direction_red:
+                red_arrow = ax_graph.arrow(-arrow_direction_red[0], -arrow_direction_red[1], 2*arrow_direction_red[0], 2*arrow_direction_red[1], head_width=0.5, head_length=0.5, fc="red", ec="red", length_includes_head=False)
+
+            arrow_direction_blue = get_arrow_direction_defender(colors, activeColor_defender=activeColor_defender, xBall=xBall, yBall=yBall, coordinates=coordinates)
+            if arrow_direction_blue:
+                blue_arrow = ax_graph.arrow(-2*arrow_direction_blue[0], -2*arrow_direction_blue[1], 4*arrow_direction_blue[0], 4*arrow_direction_blue[1], head_width=0.5, head_length=0.5, fc="blue", ec="blue", length_includes_head=False)
 
             # Update table content and cell background color
             for row in range(NUM_SENSORS):
