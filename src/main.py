@@ -25,7 +25,7 @@ def validate_array_length(test_data, num_sensors):
     if len(test_data) != expected_length:
         error_msg = (
             f"Error: test_data length is {len(test_data)}, but expected {expected_length} "
-            f"(NUM_SENSORS/number of objects in json * 2). Please check your test_data definition.\n"
+            f"- NUM_SENSORS * 2, where NUM_SENSORS is the number of objects in the JSON file. Please check your test_data definition.\n"
             f"- First NUM_SENSORS values are sensor readings.\n"
             f"- Next NUM_SENSORS values are thresholds."
         )
@@ -74,6 +74,10 @@ def start_graph(selected_port):
         [coord[1] for _, coord in coordinates],
         s=100
     )
+    
+    
+    ax_graph.arrow(-2, -2, 4, 4, head_width=1, head_length=1, fc='red', ec='red', length_includes_head=False)
+    ax_graph.arrow(-2,-2, 0, -4, head_width=1, head_length=1, fc='blue', ec='blue', length_includes_head=False)
 
     # Create a label for each sensor based on the coordinates
     # You can customize the label position and other elements as needed

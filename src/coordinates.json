@@ -24,7 +24,6 @@
   { "label": 22, "coordinates": [3.464, -2.0] },
   { "label": 23, "coordinates": [3.864, -1.035] },
 
-  // Defender transistors
   { "label": 24, "coordinates": [5.5, 0] },
   { "label": 25, "coordinates": [7, 0] },
   { "label": 26, "coordinates": [8.5, 0] },
